@@ -1,7 +1,9 @@
-import 'package:contact_app/model/contact.dart';
+import 'package:contact_app/data/contact.dart';
 import 'package:contact_app/ui/contacts_list/widget/contact_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:faker/faker.dart';
+
+import '../../model/contact_mode.dart';
 
 class ContactsListPage extends StatefulWidget {
   const ContactsListPage({super.key});
@@ -11,21 +13,8 @@ class ContactsListPage extends StatefulWidget {
 }
 
 class _ContactsListPageState extends State<ContactsListPage> {
-  late List<Contact> _contact;
-
-  @override
-  void initState() {
-    _contact = List.generate(
-      50,
-      (index) => Contact(
-          name: '${faker.person.firstName()}  ${faker.person.lastName()}',
-          email: faker.internet.freeEmail(),
-          phoneNumber: faker.randomGenerator.integer(100000).toString(),
-          isFvorite: false),
-    );
-    super.initState();
-  }
-
+ 
+   final ContactModel _contactModel = ContactModel();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,12 +22,12 @@ class _ContactsListPageState extends State<ContactsListPage> {
         title: const Text('Contacts'),
       ),
       body: ListView.builder(
-        itemCount: _contact.length,
+        itemCount: _contactModel.contact.length,
         itemBuilder: (ctx, index) {
-          return ContactTile(contact: _contact[index],isFavoritePressed: () {
+          return ContactTile(contact: _contactModel.contact[index],isFavoritePressed: () {
              setState(() {
-              _contact[index].isFvorite = !_contact[index].isFvorite;
-              _contact.sort(
+              _contactModel.contact[index].isFvorite = !_contactModel.contact[index].isFvorite;
+              _contactModel.contact.sort(
                 (a, b) {
                   if (a.isFvorite) {
                     return -1;

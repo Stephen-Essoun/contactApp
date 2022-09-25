@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../model/contact.dart';
+import '../../../data/contact.dart';
 
 class ContactTile extends StatelessWidget {
   const ContactTile(
