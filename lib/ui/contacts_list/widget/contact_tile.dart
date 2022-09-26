@@ -1,29 +1,35 @@
+import 'package:contact_app/model/contact_mode.dart';
 import 'package:flutter/material.dart';
-
-import '../../../data/contact.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class ContactTile extends StatelessWidget {
-  const ContactTile(
-      {Key? key, required this.contact, required this.isFavoritePressed})
-      : super(key: key);
-  final Contact contact;
-  final void Function() isFavoritePressed;
+  const ContactTile({
+    Key? key,
+    required this.contactIndex,
+  }) : super(key: key);
+  final int contactIndex;
+  // final void Function() isFavoritePressed;
 
   @override
   Widget build(BuildContext context) {
+    // ContactModel
+    final model = ScopedModel.of<ContactModel>(context);
+    var displayedContact = model.contact[contactIndex];
     return ListTile(
       title: Text(
-        contact.name,
+        displayedContact.name,
       ),
-      subtitle: Text(contact.email),
+      subtitle: Text(displayedContact.email),
       trailing: IconButton(
-          onPressed: isFavoritePressed,
-          icon: Icon(
-            contact.isFvorite == true ? Icons.star : Icons.star_border,
-            color:
-                contact.isFvorite == true ? Colors.amber : Colors.grey,
-          )),
+        onPressed: () {
+          model.isFavoriteStatus(contactIndex);
+        },
+        icon: Icon(
+          displayedContact.isFvorite == true ? Icons.star : Icons.star_border,
+          color:
+              displayedContact.isFvorite == true ? Colors.amber : Colors.grey,
+        ),
+      ),
     );
-    
   }
 }
