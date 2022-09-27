@@ -34,6 +34,10 @@ class ContactModel extends Model {
       },
     );
   }
+  void addContact(Contact contact){
+    _contact.add(contact);
+    notifyListeners();
+  }
 
   int _compareBaseOnFavoriteStatus(Contact a, Contact b) {
     if (a.isFvorite) {
