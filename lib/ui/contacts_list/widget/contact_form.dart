@@ -1,5 +1,8 @@
-import 'package:email_validator/email_validator.dart';
+import 'package:contact_app/data/contact.dart';
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
+
+import '../../../model/contact_model.dart';
 
 class ContactForm extends StatefulWidget {
   const ContactForm({super.key});
@@ -13,6 +16,19 @@ class _ContactFormState extends State<ContactForm> {
   String? name;
   String? email;
   String? phoneNumber;
+
+  late TextEditingController username;
+  late TextEditingController useremail;
+  late TextEditingController userphoneNumber;
+
+  @override
+  void initState() {
+    username = TextEditingController();
+    useremail = TextEditingController();
+    userphoneNumber = TextEditingController();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -64,12 +80,7 @@ class _ContactFormState extends State<ContactForm> {
               height: 10,
             ),
             TextButton.icon(
-                onPressed: () {
-                  if (_formkey.currentState!.validate()) {
-                    _formkey.currentState!.save();
-                    print('$name + $email + $phoneNumber');
-                  }
-                },
+                onPressed: _onSaveButtonPressed,
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Colors.blue),
                   foregroundColor: MaterialStateProperty.all(Colors.white),
@@ -110,5 +121,17 @@ class _ContactFormState extends State<ContactForm> {
       return 'Enter a valid phone number';
     }
     return null;
+  }
+
+  void _onSaveButtonPressed() {
+    if (_formkey.currentState!.validate()) {
+      _formkey.currentState!.save();
+      final newContact = Contact(
+          name: username.text,
+          email: useremail.text,
+          phoneNumber: userphoneNumber.text,
+          isFvorite: false);
+      ScopedModel.of<ContactModel>(context).addContact(newContact);
+    }
   }
 }

@@ -21,6 +21,10 @@ class ContactModel extends Model {
     notifyListeners();
   }
 
+  void addcontact(Contact contact){
+  _contact.add(contact);
+  }
+
   void _sortContacts() {
     contact.sort(
       (a, b) {
@@ -35,7 +39,9 @@ class ContactModel extends Model {
     );
   }
   void addContact(Contact contact){
+    print(_contact.length);
     _contact.add(contact);
+    print(_contact.length);
     notifyListeners();
   }
 

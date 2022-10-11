@@ -1,4 +1,4 @@
-import 'package:contact_app/model/contact_mode.dart';
+import 'package:contact_app/model/contact_model.dart';
 import 'package:contact_app/ui/contact/contact_create_page.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
           
           primarySwatch: Colors.blue,
         ),
-        home:const  ContactCreatePage (),
+        home:const  ContactsListPage(),
       ),
     );
   }

@@ -1,7 +1,7 @@
 import 'package:contact_app/ui/contacts_list/widget/contact_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
-import '../../model/contact_mode.dart';
+import '../../model/contact_model.dart';
 
 class ContactsListPage extends StatefulWidget {
   const ContactsListPage({super.key});
@@ -33,6 +33,10 @@ class _ContactsListPageState extends State<ContactsListPage> {
           },
         );
       }),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: const Icon(Icons.person_add),
+      ),
     );
   }
 }
