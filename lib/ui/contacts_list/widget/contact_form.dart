@@ -1,11 +1,18 @@
 import 'package:contact_app/data/contact.dart';
+import 'package:contact_app/ui/contacts_list/contacts_list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
-
 import '../../../model/contact_model.dart';
 
 class ContactForm extends StatefulWidget {
-  const ContactForm({super.key});
+  final Contact? editedContact;
+  final int? editedContactIndex;
+
+  const ContactForm({
+    super.key,
+    this.editedContact,
+    this.editedContactIndex,
+  });
 
   @override
   State<ContactForm> createState() => _ContactFormState();
@@ -41,8 +48,10 @@ class _ContactFormState extends State<ContactForm> {
               height: 10,
             ),
             TextFormField(
+              controller: username,
               onSaved: (value) => name = value,
               validator: (value) => _nameValidator(value.toString()),
+              // initialValue: widget.editedContact!.name,
               decoration: InputDecoration(
                 labelText: 'Name',
                 border: OutlineInputBorder(
@@ -54,8 +63,10 @@ class _ContactFormState extends State<ContactForm> {
               height: 10,
             ),
             TextFormField(
+              controller: useremail,
               onSaved: (value) => email = value,
               validator: (value) => _isEmailValid(value.toString()),
+              // initialValue: widget.editedContact!.email,
               decoration: InputDecoration(
                 labelText: 'Email',
                 border: OutlineInputBorder(
@@ -65,10 +76,12 @@ class _ContactFormState extends State<ContactForm> {
             ),
             const SizedBox(
               height: 10,
-            ),
+            ), 
             TextFormField(
+              controller: userphoneNumber,
               onSaved: (value) => phoneNumber = value,
               validator: (value) => _validateMobile(value.toString()),
+              // initialValue: widget.editedContact!.phoneNumber,
               decoration: InputDecoration(
                 labelText: 'Phone',
                 border: OutlineInputBorder(
@@ -131,7 +144,18 @@ class _ContactFormState extends State<ContactForm> {
           email: useremail.text,
           phoneNumber: userphoneNumber.text,
           isFvorite: false);
-      ScopedModel.of<ContactModel>(context).addContact(newContact);
+      if (widget.editedContact != null) {
+        ScopedModel.of<ContactModel>(context)
+            .updateContact(newContact, widget.editedContactIndex!);
+        print(newContact);
+      } else {
+        ScopedModel.of<ContactModel>(context).addContact(newContact);
+      }
+      Navigator.of(context).pop();
+      // Navigator.of(context).pushAndRemoveUntil(
+      //     MaterialPageRoute(builder: (ctx) => const ContactsListPage()),
+      //     (route) => false);
+      print(username.text);
     }
   }
 }

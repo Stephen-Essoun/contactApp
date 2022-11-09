@@ -4,14 +4,18 @@ import 'package:scoped_model/scoped_model.dart';
 import '../data/contact.dart';
 
 class ContactModel extends Model {
-  final List<Contact> _contact = List.generate(
-    50,
-    (index) => Contact(
-        name: '${faker.person.firstName()}  ${faker.person.lastName()}',
-        email: faker.internet.freeEmail(),
-        phoneNumber: faker.randomGenerator.integer(100000).toString(),
+  final List<Contact> _contact = [
+    Contact(
+        name: 'Stephen',
+        email: 'essoun379@gmail.com',
+        phoneNumber: 'phoneNumber',
         isFvorite: false),
-  );
+    Contact(
+        name: 'Stephen',
+        email: 'email',
+        phoneNumber: 'phoneNumber',
+        isFvorite: false)
+  ];
 
   List<Contact> get contact => _contact;
 
@@ -21,8 +25,8 @@ class ContactModel extends Model {
     notifyListeners();
   }
 
-  void addcontact(Contact contact){
-  _contact.add(contact);
+  void addcontact(Contact contact) {
+    _contact.add(contact);
   }
 
   void _sortContacts() {
@@ -38,10 +42,14 @@ class ContactModel extends Model {
       },
     );
   }
-  void addContact(Contact contact){
-    print(_contact.length);
+
+  void addContact(Contact contact) {
     _contact.add(contact);
-    print(_contact.length);
+    notifyListeners();
+  }
+
+  void updateContact(Contact contact, int contactIndex) {
+    _contact[contactIndex] = contact;
     notifyListeners();
   }
 
