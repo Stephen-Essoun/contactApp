@@ -14,33 +14,35 @@ class ContactTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // ContactModel
-    final model = ScopedModel.of<ContactModel>(context);
-    var displayedContact = model.contact[contactIndex];
-    return ListTile(
-      title: Text(
-        displayedContact.name,
-      ),
-      subtitle: Text(displayedContact.email),
-      trailing: IconButton(
-        onPressed: () {
-          model.isFavoriteStatus(contactIndex);
-        },
-        icon: Icon(
-          displayedContact.isFvorite == true ? Icons.star : Icons.star_border,
-          color:
-              displayedContact.isFvorite == true ? Colors.amber : Colors.grey,
+    // final model = ScopedModel.of<ContactModel>(context);
+    return ScopedModelDescendant<ContactModel>(builder: (ctx, child, model) {
+      var displayedContact = model.contact[contactIndex];
+      return ListTile(
+        title: Text(
+          displayedContact.name,
         ),
-      ),
-      onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (_) => ContactEditPage(
-              editedContact: displayedContact,
-              editedContactIndex: contactIndex,
-            ),
+        subtitle: Text(model.contact[contactIndex].name),
+        trailing: IconButton(
+          onPressed: () {
+            model.isFavoriteStatus(contactIndex);
+          },
+          icon: Icon(
+            displayedContact.isFvorite == true ? Icons.star : Icons.star_border,
+            color:
+                displayedContact.isFvorite == true ? Colors.amber : Colors.grey,
           ),
-        );
-      },
-    );
+        ),
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => ContactEditPage(
+                editedContact: displayedContact,
+                editedContactIndex: contactIndex,
+              ),
+            ),
+          );
+        },
+      );
+    });
   }
 }

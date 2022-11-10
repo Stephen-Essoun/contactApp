@@ -4,18 +4,9 @@ import 'package:scoped_model/scoped_model.dart';
 import '../data/contact.dart';
 
 class ContactModel extends Model {
-  final List<Contact> _contact = [
-    Contact(
-        name: 'Stephen',
-        email: 'essoun379@gmail.com',
-        phoneNumber: 'phoneNumber',
-        isFvorite: false),
-    Contact(
-        name: 'Stephen',
-        email: 'email',
-        phoneNumber: 'phoneNumber',
-        isFvorite: false)
-  ];
+  final List<Contact> _contact = [];
+  int _counter = 0;
+  int get counter => _counter;
 
   List<Contact> get contact => _contact;
 
@@ -23,10 +14,6 @@ class ContactModel extends Model {
     contact[index].isFvorite = !contact[index].isFvorite;
     _sortContacts();
     notifyListeners();
-  }
-
-  void addcontact(Contact contact) {
-    _contact.add(contact);
   }
 
   void _sortContacts() {
@@ -43,7 +30,12 @@ class ContactModel extends Model {
     );
   }
 
-  void addContact(Contact contact) {
+  void increment(){
+    _counter ++;
+    notifyListeners();
+  }
+
+   addContact(Contact contact) {
     _contact.add(contact);
     notifyListeners();
   }

@@ -20,9 +20,9 @@ class ContactForm extends StatefulWidget {
 
 class _ContactFormState extends State<ContactForm> {
   final _formkey = GlobalKey<FormState>();
-  String? name;
-  String? email;
-  String? phoneNumber;
+  String? _name;
+  String? _email;
+  String? _phoneNumber;
 
   late TextEditingController username;
   late TextEditingController useremail;
@@ -49,7 +49,7 @@ class _ContactFormState extends State<ContactForm> {
             ),
             TextFormField(
               controller: username,
-              onSaved: (value) => name = value,
+              onSaved: (value) => _name = value,
               validator: (value) => _nameValidator(value.toString()),
               // initialValue: widget.editedContact!.name,
               decoration: InputDecoration(
@@ -64,7 +64,7 @@ class _ContactFormState extends State<ContactForm> {
             ),
             TextFormField(
               controller: useremail,
-              onSaved: (value) => email = value,
+              onSaved: (value) => _email = value,
               validator: (value) => _isEmailValid(value.toString()),
               // initialValue: widget.editedContact!.email,
               decoration: InputDecoration(
@@ -76,10 +76,10 @@ class _ContactFormState extends State<ContactForm> {
             ),
             const SizedBox(
               height: 10,
-            ), 
+            ),
             TextFormField(
               controller: userphoneNumber,
-              onSaved: (value) => phoneNumber = value,
+              onSaved: (value) => _phoneNumber = value,
               validator: (value) => _validateMobile(value.toString()),
               // initialValue: widget.editedContact!.phoneNumber,
               decoration: InputDecoration(
@@ -104,6 +104,14 @@ class _ContactFormState extends State<ContactForm> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    useremail.dispose();
+    username.dispose();
+    userphoneNumber.dispose();
+    super.dispose();
   }
 
   String? _nameValidator(String name) {
@@ -139,23 +147,23 @@ class _ContactFormState extends State<ContactForm> {
   void _onSaveButtonPressed() {
     if (_formkey.currentState!.validate()) {
       _formkey.currentState!.save();
+      print('$_email + $_name + $_phoneNumber}');
       final newContact = Contact(
-          name: username.text,
-          email: useremail.text,
-          phoneNumber: userphoneNumber.text,
+          name: _name!,
+          email: _email!,
+          phoneNumber: _phoneNumber!,
           isFvorite: false);
       if (widget.editedContact != null) {
         ScopedModel.of<ContactModel>(context)
             .updateContact(newContact, widget.editedContactIndex!);
-        print(newContact);
       } else {
         ScopedModel.of<ContactModel>(context).addContact(newContact);
       }
+
       Navigator.of(context).pop();
       // Navigator.of(context).pushAndRemoveUntil(
       //     MaterialPageRoute(builder: (ctx) => const ContactsListPage()),
       //     (route) => false);
-      print(username.text);
     }
   }
 }
