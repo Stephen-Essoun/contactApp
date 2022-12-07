@@ -1,6 +1,5 @@
-import 'dart:developer';
-
 import 'package:contact_app/ui/contact/contact_create_page.dart';
+import 'package:contact_app/ui/contacts_list/widget/contact_form.dart';
 import 'package:contact_app/ui/contacts_list/widget/contact_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -28,7 +27,7 @@ class _ContactsListPageState extends State<ContactsListPage> {
         model,
       ) {
         return ListView.builder(
-          itemCount: _contactModel.contact.length,
+          itemCount: model.contact.length,
           itemBuilder: (ctx, index) {
             return ContactTile(
               contactIndex: index,
@@ -39,9 +38,14 @@ class _ContactsListPageState extends State<ContactsListPage> {
       }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (_) => const ContactCreatePage()),
-          );
+          showDialog(
+              context: context,
+              builder: (ctx) => const Dialog(
+                    child: AspectRatio(
+                      aspectRatio: 20 / 20,
+                      child: ContactForm(),
+                    ),
+                  ));
         },
         child: const Icon(Icons.person_add),
       ),

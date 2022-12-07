@@ -1,12 +1,10 @@
-import 'package:faker/faker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import '../data/contact.dart';
 
 class ContactModel extends Model {
   final List<Contact> _contact = [];
-  int _counter = 0;
-  int get counter => _counter;
 
   List<Contact> get contact => _contact;
 
@@ -30,12 +28,7 @@ class ContactModel extends Model {
     );
   }
 
-  void increment(){
-    _counter ++;
-    notifyListeners();
-  }
-
-   addContact(Contact contact) {
+  void addContact(Contact contact) {
     _contact.add(contact);
     notifyListeners();
   }
@@ -60,5 +53,21 @@ class ContactModel extends Model {
 
   int _compareAlphabetically(Contact a, Contact b) {
     return a.name.compareTo(b.name);
+  }
+}
+
+class ContactModelA extends ChangeNotifier {
+  final List<Contact> _contact = [
+    Contact(
+        name: 'name',
+        email: 'email',
+        phoneNumber: 'phoneNumber',
+        isFvorite: false)
+  ];
+
+  List<Contact> get contact => _contact;
+  void addContact(Contact contact) {
+    _contact.add(contact);
+    notifyListeners();
   }
 }

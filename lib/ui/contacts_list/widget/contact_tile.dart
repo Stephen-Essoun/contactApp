@@ -19,9 +19,9 @@ class ContactTile extends StatelessWidget {
       var displayedContact = model.contact[contactIndex];
       return ListTile(
         title: Text(
-          displayedContact.name,
+          model.contact[contactIndex].name,
         ),
-        subtitle: Text(model.contact[contactIndex].name),
+        subtitle: Text(model.contact[contactIndex].phoneNumber),
         trailing: IconButton(
           onPressed: () {
             model.isFavoriteStatus(contactIndex);

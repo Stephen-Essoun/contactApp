@@ -1,5 +1,4 @@
 import 'package:contact_app/data/contact.dart';
-import 'package:contact_app/ui/contacts_list/contacts_list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import '../../../model/contact_model.dart';
@@ -20,98 +19,87 @@ class ContactForm extends StatefulWidget {
 
 class _ContactFormState extends State<ContactForm> {
   final _formkey = GlobalKey<FormState>();
-  String? _name;
-  String? _email;
-  String? _phoneNumber;
-
-  late TextEditingController username;
-  late TextEditingController useremail;
-  late TextEditingController userphoneNumber;
-
-  @override
-  void initState() {
-    username = TextEditingController();
-    useremail = TextEditingController();
-    userphoneNumber = TextEditingController();
-    super.initState();
-  }
+  late String _name;
+  late String _email;
+  late String _phoneNumber;
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formkey,
-      child: SafeArea(
-        minimum: const EdgeInsets.all(10),
-        child: ListView(
-          children: [
-            const SizedBox(
-              height: 10,
-            ),
-            TextFormField(
-              controller: username,
-              onSaved: (value) => _name = value,
-              validator: (value) => _nameValidator(value.toString()),
-              // initialValue: widget.editedContact!.name,
-              decoration: InputDecoration(
-                labelText: 'Name',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+    return ScopedModelDescendant<ContactModel>(
+        builder: (context, child, model) {
+      return Form(
+        key: _formkey,
+        child: SafeArea(
+          minimum: const EdgeInsets.all(10),
+          child: ListView(
+            children: [
+              const SizedBox(
+                height: 10,
+              ),
+              TextFormField(
+                onSaved: (value) => _name = value!,
+                validator: (value) => _nameValidator(value.toString()),
+                // initialValue: widget.editedContact!.name,
+                decoration: InputDecoration(
+                  labelText: 'Name',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextFormField(
-              controller: useremail,
-              onSaved: (value) => _email = value,
-              validator: (value) => _isEmailValid(value.toString()),
-              // initialValue: widget.editedContact!.email,
-              decoration: InputDecoration(
-                labelText: 'Email',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+              const SizedBox(
+                height: 10,
+              ),
+              TextFormField(
+                onSaved: (value) => _email = value!,
+                validator: (value) => _isEmailValid(value.toString()),
+                // initialValue: widget.editedContact!.email,
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextFormField(
-              controller: userphoneNumber,
-              onSaved: (value) => _phoneNumber = value,
-              validator: (value) => _validateMobile(value.toString()),
-              // initialValue: widget.editedContact!.phoneNumber,
-              decoration: InputDecoration(
-                labelText: 'Phone',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+              const SizedBox(
+                height: 10,
+              ),
+              TextFormField(
+                onSaved: (value) => _phoneNumber = value!,
+                validator: (value) => _validateMobile(value.toString()),
+                // initialValue: widget.editedContact!.phoneNumber,
+                decoration: InputDecoration(
+                  labelText: 'Phone',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextButton.icon(
-                onPressed: _onSaveButtonPressed,
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.blue),
-                  foregroundColor: MaterialStateProperty.all(Colors.white),
-                ),
-                label: const Text('Save Contact'),
-                icon: const Icon(Icons.person_add))
-          ],
-        ),
-      ),
-    );
-  }
+              const SizedBox(
+                height: 10,
+              ),
+              TextButton.icon(
+                  onPressed: () {
+                    _formkey.currentState!.save();
 
-  @override
-  void dispose() {
-    useremail.dispose();
-    username.dispose();
-    userphoneNumber.dispose();
-    super.dispose();
+                    model.addContact(Contact(
+                        name: _name,
+                        email: _email,
+                        phoneNumber: _phoneNumber,
+                        isFvorite: widget.editedContact?.isFvorite ?? false));
+                    Navigator.of(context).pop();
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.blue),
+                    foregroundColor: MaterialStateProperty.all(Colors.white),
+                  ),
+                  label: const Text('Save Contact'),
+                  icon: const Icon(Icons.person_add))
+            ],
+          ),
+        ),
+      );
+    });
   }
 
   String? _nameValidator(String name) {
@@ -147,19 +135,21 @@ class _ContactFormState extends State<ContactForm> {
   void _onSaveButtonPressed() {
     if (_formkey.currentState!.validate()) {
       _formkey.currentState!.save();
-      print('$_email + $_name + $_phoneNumber}');
+      print('$_email + $_name + $_phoneNumber');
       final newContact = Contact(
-          name: _name!,
-          email: _email!,
-          phoneNumber: _phoneNumber!,
-          isFvorite: false);
+          name: _name,
+          email: _email,
+          phoneNumber: _phoneNumber,
+          isFvorite: widget.editedContact?.isFvorite ?? false);
+
       if (widget.editedContact != null) {
         ScopedModel.of<ContactModel>(context)
             .updateContact(newContact, widget.editedContactIndex!);
       } else {
         ScopedModel.of<ContactModel>(context).addContact(newContact);
       }
-
+      var contact = ScopedModel.of<ContactModel>(context).contact;
+      print(contact);
       Navigator.of(context).pop();
       // Navigator.of(context).pushAndRemoveUntil(
       //     MaterialPageRoute(builder: (ctx) => const ContactsListPage()),
