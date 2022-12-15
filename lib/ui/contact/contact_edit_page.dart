@@ -19,6 +19,8 @@ class ContactEditPage extends StatelessWidget {
           title: const Text('Contact'),
         ),
         body: ContactForm(
+          editedContact: editedContact,
+          editedContactIndex: editedContactIndex,
           key: key,
         ));
   }

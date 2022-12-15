@@ -1,5 +1,5 @@
 import 'package:contact_app/model/contact_model.dart';
-import 'package:contact_app/ui/contact/contact_edit_age.dart';
+import 'package:contact_app/ui/contact/contact_edit_page.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -18,7 +18,7 @@ class ContactTile extends StatelessWidget {
     return ScopedModelDescendant<ContactModel>(builder: (ctx, child, model) {
       var displayedContact = model.contact[contactIndex];
       return ListTile(
-        title: Text(
+        title: Text( 
           model.contact[contactIndex].name,
         ),
         subtitle: Text(model.contact[contactIndex].phoneNumber),

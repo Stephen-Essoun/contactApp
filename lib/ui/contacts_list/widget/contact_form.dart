@@ -20,7 +20,7 @@ class ContactForm extends StatefulWidget {
 class _ContactFormState extends State<ContactForm> {
   final _formkey = GlobalKey<FormState>();
   late String _name;
-  late String _email;
+  // late String _email;
   late String _phoneNumber;
 
   @override
@@ -39,7 +39,9 @@ class _ContactFormState extends State<ContactForm> {
               TextFormField(
                 onSaved: (value) => _name = value!,
                 validator: (value) => _nameValidator(value.toString()),
-                // initialValue: widget.editedContact!.name,
+                initialValue: widget.editedContactIndex == null
+                    ? ''
+                    : widget.editedContact!.name,
                 decoration: InputDecoration(
                   labelText: 'Name',
                   border: OutlineInputBorder(
@@ -47,27 +49,29 @@ class _ContactFormState extends State<ContactForm> {
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 10,
-              ),
-              TextFormField(
-                onSaved: (value) => _email = value!,
-                validator: (value) => _isEmailValid(value.toString()),
-                // initialValue: widget.editedContact!.email,
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ),
+              // const SizedBox(
+              //   height: 10,
+              // ),
+              // TextFormField(
+              //   onSaved: (value) => _email = value!,
+              //   validator: (value) => _isEmailValid(value.toString()),
+              //   // initialValue: widget.editedContact!.email,
+              //   decoration: InputDecoration(
+              //     labelText: 'Email',
+              //     border: OutlineInputBorder(
+              //       borderRadius: BorderRadius.circular(10),
+              //     ),
+              //   ),
+              // ),
               const SizedBox(
                 height: 10,
               ),
               TextFormField(
                 onSaved: (value) => _phoneNumber = value!,
                 validator: (value) => _validateMobile(value.toString()),
-                // initialValue: widget.editedContact!.phoneNumber,
+                initialValue: widget.editedContactIndex == null
+                    ? ''
+                    : widget.editedContact!.phoneNumber,
                 decoration: InputDecoration(
                   labelText: 'Phone',
                   border: OutlineInputBorder(
@@ -79,16 +83,17 @@ class _ContactFormState extends State<ContactForm> {
                 height: 10,
               ),
               TextButton.icon(
-                  onPressed: () {
-                    _formkey.currentState!.save();
+                  onPressed: () => _onSaveButtonPressed(),
+                  //  {
+                  //   _formkey.currentState!.save();
 
-                    model.addContact(Contact(
-                        name: _name,
-                        email: _email,
-                        phoneNumber: _phoneNumber,
-                        isFvorite: widget.editedContact?.isFvorite ?? false));
-                    Navigator.of(context).pop();
-                  },
+                  //   model.addContact(Contact(
+                  //       name: _name,
+                  //       email: _email,
+                  //       phoneNumber: _phoneNumber,
+                  //       isFvorite: widget.editedContact?.isFvorite ?? false));
+                  //   Navigator.of(context).pop();
+                  // },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.blue),
                     foregroundColor: MaterialStateProperty.all(Colors.white),
@@ -135,10 +140,10 @@ class _ContactFormState extends State<ContactForm> {
   void _onSaveButtonPressed() {
     if (_formkey.currentState!.validate()) {
       _formkey.currentState!.save();
-      print('$_email + $_name + $_phoneNumber');
+      print('$_name + $_phoneNumber');
       final newContact = Contact(
           name: _name,
-          email: _email,
+          email: '_email',
           phoneNumber: _phoneNumber,
           isFvorite: widget.editedContact?.isFvorite ?? false);
 
