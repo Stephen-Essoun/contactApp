@@ -9,6 +9,8 @@ class ContactCreatePage extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Contact'),
         ),
-        body:ContactForm(key: key,));
+        body: ContactForm(
+          key: key,
+        ));
   }
 }

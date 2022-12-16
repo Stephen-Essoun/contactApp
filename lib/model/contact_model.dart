@@ -32,6 +32,10 @@ class ContactModel extends Model {
     _contact.add(contact);
     notifyListeners();
   }
+void removeContact(int index){
+  _contact.removeAt(index);
+  notifyListeners();
+}
 
   void updateContact(Contact contact, int contactIndex) {
     _contact[contactIndex] = contact;
